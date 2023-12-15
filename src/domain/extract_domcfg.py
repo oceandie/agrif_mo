@@ -26,35 +26,45 @@ from xnemogcm import open_domain_cfg
 #
 #
 
-coord = '/data/users/dbruciaf/NATL/orca025/domain/r4.2_halo/ORCA025_coordinates_isf_filled_scalefactorfix_r42.nc'
+domcfg = '/data/users/dbruciaf/AGRIF-NAtl/gs/orca04/domain_cfg_large.nc'
 
-nbghost = 4
+# Global grids will have nghost_w = 0 and nghost_s = 1 
+# (the western boundary is cyclic, the southern boundary 
+# over Antarctica is closed).
+root_nbghost_s = 1
+root_nbghost_w = 0
+# AGRIF grids have, by default, nghost_w = nbghost_s = 4. 
+# One of these ghost points is masked as required in NEMO.
+zoom_nbghost_s = 4
+zoom_nbghost_w = 4
+rx = 1
+ry = 1
 
 # indexes in python convention
-imin = 819
-imax = 958
-jmin = 813
-jmax = 868 
+imin =  ( 820 + root_nbghost_w) - 1
+imax =  (1080 + root_nbghost_w  - 1) - 1
+jmin =  ( 779 + root_nbghost_s) - 1
+jmax =  ( 920 + root_nbghost_s  - 1) - 1
 
-IMIN = imin - nbghost
-IMAX = imax + nbghost
-JMIN = jmin - nbghost
-JMAX = jmax + nbghost 
+IMIN = imin - int(zoom_nbghost_w / rx)
+IMAX = imax + int(zoom_nbghost_w / rx)
+JMIN = jmin - int(zoom_nbghost_s / ry)
+JMAX = jmax + int(zoom_nbghost_s / ry) 
 
-ds_cor  = xr.open_dataset(coord)
+ds_dom  = xr.open_dataset(domcfg)
 
 # Extracting only the part of the domain we need
-ds_cor = ds_cor.isel(x=slice(IMIN,IMAX), y=slice(JMIN,JMAX))
+ds_dom = ds_dom.isel(x=slice(IMIN,IMAX+1), y=slice(JMIN,JMAX+1))
 
-Vars = []
-for grd in ['t','u','v','f']:
-    Vars.append('glam'+grd)
-    Vars.append('gphi'+grd) 
-    Vars.append('e1'+grd)
-    Vars.append('e2'+grd) 
+#Vars = []
+#for grd in ['t','u','v','f']:
+#    Vars.append('glam'+grd)
+#    Vars.append('gphi'+grd) 
+#    Vars.append('e1'+grd)
+#    Vars.append('e2'+grd) 
 
-ds_cor = ds_cor[Vars]
-outdir = '/data/users/dbruciaf/NATL/orca025/domain/r4.2_halo/'
-outfile = '1_coordinates_'+str(IMIN)+'_'+str(IMAX)+'_'+str(JMIN)+'_'+str(JMAX)+'.nc'
-ds_cor.to_netcdf(outdir+outfile)
+#ds_cor = ds_cor[Vars]
+outdir = './'
+outfile = '1_domain_cfg_'+str(IMIN)+'_'+str(IMAX)+'_'+str(JMIN)+'_'+str(JMAX)+'.nc'
+ds_dom.to_netcdf(outdir+outfile)
 
