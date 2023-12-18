@@ -1,0 +1,13 @@
+#!/bin/bash -l
+
+#SBATCH --qos=normal                
+#SBATCH --mem=150000                    
+#SBATCH --ntasks=8                   
+#SBATCH --output=regrid_horiz.out       
+#SBATCH --time=360                    
+
+batinp="/data/users/frsy/UKGO/GO8_GOSI9/bathymetry/GEBCO_2021/GEBCO_2021_sub_ice_topo.nc"
+tmask="/data/users/dbruciaf/AGRIF-NAtl/gs/orca08/1_mesh_mask-tmask_as_gosi9.nc"
+batout="/data/users/dbruciaf/AGRIF-NAtl/gs/orca08/1_bathy_meter.nc"
+
+python bathy_regrid_horiz.py -B ${batinp} -S gebco -M ${tmask} -m -d3.0 -F -o ${batout}
