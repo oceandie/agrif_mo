@@ -1,5 +1,0 @@
-&shape_inputs
- interp_file = '/data/users/dbruciaf/AGRIF/gs/orca04/atm/rmp_core_to_gs-orca04_BILINEAR.nc'
- output_file = '/data/users/dbruciaf/AGRIF/gs/orca04/atm/wgt_core_to_gs-orca04_bilinear.nc'
- ew_wrap     = 0
-/

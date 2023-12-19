@@ -1,0 +1,5 @@
+&shape_inputs
+ interp_file = '/data/users/dbruciaf/AGRIF-NAtl/gs/orca08/atm/rmp_core_to_gs-orca08_BICUBIC.nc'
+ output_file = '/data/users/dbruciaf/AGRIF-NAtl/gs/orca08/atm/wgt_core_to_gs-orca08_bicubic.nc'
+ ew_wrap     = 0
+/
