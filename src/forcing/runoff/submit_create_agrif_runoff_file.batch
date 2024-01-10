@@ -1,0 +1,9 @@
+#!/bin/bash -l
+
+#SBATCH --qos=normal                
+#SBATCH --mem=150000                    
+#SBATCH --ntasks=8                   
+#SBATCH --output=regrid_horiz.out       
+#SBATCH --time=360                    
+
+python create_agrif_runoff_file.py 
