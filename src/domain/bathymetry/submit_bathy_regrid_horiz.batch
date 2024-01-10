@@ -7,7 +7,18 @@
 #SBATCH --time=360                    
 
 batinp="/data/users/frsy/UKGO/GO8_GOSI9/bathymetry/GEBCO_2021/GEBCO_2021_sub_ice_topo.nc"
-tmask="/data/users/dbruciaf/AGRIF-NAtl/gs/orca08/1_mesh_mask-tmask_as_gosi9.nc"
-batout="/data/users/dbruciaf/AGRIF-NAtl/gs/orca08/1_bathy_meter.nc"
 
-python bathy_regrid_horiz.py -B ${batinp} -S gebco -M ${tmask} -m -d3.0 -F -o ${batout}
+# orca04
+#tmask="/data/users/dbruciaf/AGRIF-NAtl/gs/orca04/1_mesh_mask-tmask_as_gosi9.nc"
+#batout="/data/users/dbruciaf/AGRIF-NAtl/gs/orca04/1_bathy_meter.nc"
+
+# orca08 
+tmask="/data/users/dbruciaf/AGRIF-NAtl/gs/orca08/1_mesh_mask-tmask_as_gosi9-025.nc"
+batout="/data/users/dbruciaf/AGRIF-NAtl/gs/orca08/1_bathy_meter_3m.nc"
+
+# orca20 
+#tmask="/data/users/dbruciaf/AGRIF-NAtl/gs/orca20/1_mesh_mask-tmask_as_gosi9-025.nc"
+#batout="/data/users/dbruciaf/AGRIF-NAtl/gs/orca20/1_bathy_meter_3m.nc"
+
+python bathy_regrid_horiz.py -B ${batinp} -S gebco -M ${tmask} -m -d 3.0 -F -o ${batout}
+#python bathy_regrid_horiz.py -B ${batinp} -S gebco -M ${tmask} -d 3.0 -F -o ${batout}
