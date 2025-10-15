@@ -1,0 +1,10 @@
+#!/bin/bash -l
+
+#SBATCH --qos=normal                
+#SBATCH --mem=200000                    
+#SBATCH --ntasks=1                   
+#SBATCH --output=hpge_orca025.out       
+#SBATCH --time=360                    
+
+python dom2mesh.py
+
