@@ -1,0 +1,23 @@
+# ==========================================================================
+# INPUT FILE TO SETUP A LOCALISED VERTICAL COORDINATE SYSTEM               |
+# ==========================================================================
+
+# A) INPUT FILES
+
+# *) Bathymetry of the domain
+bathyFile = '/data/users/dbruciaf/AGRIF-NAtl/movf/orca20/1_bathy_meter_3m_FillZero.ncS21TT'
+
+# *) Horizontal grid of the domain
+hgridFile = '/data/users/dbruciaf/AGRIF-NAtl/movf/orca20/1_mesh_mask-tmask_as_gosi10-025.nc'
+
+# B) LOCALISATION AREA: parameters to identify
+#    limits of localisation area
+loc_isobt = 4000
+loc_polyg = 3
+
+# c) TRANSITION AREA: parameters for Gaussian filtering 
+#    to identify limits of transition area
+s2z_factr = 1.e-10
+s2z_sigma = 3
+s2z_itera = 6
+s2z_wghts = True
