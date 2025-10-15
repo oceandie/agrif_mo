@@ -1,0 +1,5 @@
+&shape_inputs
+ interp_file = '/data/users/dbruciaf/AGRIF-NAtl/gosi10-ls_r20/atm/rmp_jra55_to_ls_r20_BICUBIC.nc'
+ output_file = '/data/users/dbruciaf/AGRIF-NAtl/gosi10-ls_r20/atm/wgt_jra55_to_ls_r20_bicubic.nc'
+ ew_wrap     = 0
+/
