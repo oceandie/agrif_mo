@@ -29,7 +29,7 @@ base_dir = "/data/users/dbruciaf/AGRIF-NAtl/movf/orca20"
 #loc_file = base_dir + '/loc_MEs/bathymetry.loc_area.dep4000_pol3_sig1_itr4.nc'
 #loc_file = base_dir + '/loc_MEs/bathymetry.loc_area.dep4000_pol3_sig1_itr8.nc'
 #loc_file = base_dir + '/loc_MEs/bathymetry.loc_area.dep4000_pol3_sig3_itr2.nc'
-loc_file = base_dir + '/loc_MEs/bathymetry.loc_area.dep4000_pol3_sig3_itr3.nc'
+loc_file = base_dir + '/loc_MEs/bathymetry.loc_area.dep4000_pol3_sig3_itr6.nc'
 
 glo_file = '/data/users/dbruciaf/GOSI10_input_files/p1.0/domcfg_eORCA025_v3.1_r42.nc'
 

@@ -29,9 +29,46 @@ import numpy as np
 def round_up(a,b):
     return int(a/b) + (a % b > 0)
 
-agrif_conf = "/data/users/dbruciaf/AGRIF-NAtl/gs/orca08/AGRIF_FixedGrids.in"
-river_data = '/data/users/dbruciaf/AGRIF-NAtl/gs/orca04/bathy_as_parent/runoff/eORCA025_runoff_GO6_icb.nc'
-coord_zoom = ["/data/users/dbruciaf/AGRIF-NAtl/gs/orca08/1_mesh_mask.nc"]
+river_data = '/data/users/dbruciaf/GOSI10_input_files/p1.0/eORCA025_runoff_GO6_icb.nc'
+
+#agrif_conf = "/data/users/dbruciaf/AGRIF-NAtl/ls/orca20/AGRIF_FixedGrids.in"
+#coord_zoom = ["/data/users/dbruciaf/AGRIF-NAtl/ls/orca20/1_mesh_mask.nc"]
+#outdir = '/data/users/dbruciaf/AGRIF-NAtl/ls/orca20/runoff'
+
+#agrif_conf = "/data/users/dbruciaf/AGRIF-NAtl/gs/orca12/AGRIF_FixedGrids.in"
+#coord_zoom = ["/data/users/dbruciaf/AGRIF-NAtl/gs/orca12/1_mesh_mask.nc"]
+#outdir = '/data/users/dbruciaf/AGRIF-NAtl/gs/orca12/runoff'
+
+#agrif_conf = "/data/users/dbruciaf/AGRIF-NAtl/oliver_gs/orca04/AGRIF_FixedGrids.in"
+#coord_zoom = ["/data/users/dbruciaf/AGRIF-NAtl/oliver_gs/orca04/1_mesh_mask.nc"]
+#outdir = '/data/users/dbruciaf/AGRIF-NAtl/oliver_gs/orca04/runoff'
+
+#agrif_conf = "/data/users/dbruciaf/AGRIF-NAtl/oliver_gs/orca08/AGRIF_FixedGrids.in"
+#coord_zoom = ["/data/users/dbruciaf/AGRIF-NAtl/oliver_gs/orca08/1_mesh_mask.nc"]
+#outdir = '/data/users/dbruciaf/AGRIF-NAtl/oliver_gs/orca08/runoff'
+
+#agrif_conf = "/data/users/dbruciaf/AGRIF-NAtl/oliver_gs/orca12/AGRIF_FixedGrids.in"
+#coord_zoom = ["/data/users/dbruciaf/AGRIF-NAtl/oliver_gs/orca12/1_mesh_mask.nc"]
+#outdir = '/data/users/dbruciaf/AGRIF-NAtl/oliver_gs/orca12/runoff'
+
+#agrif_conf = "/data/users/dbruciaf/AGRIF-NAtl/movf/orca20/AGRIF_FixedGrids.in"
+#coord_zoom = ["/data/users/dbruciaf/AGRIF-NAtl/movf/orca20/zps/1_mesh_mask.nc"]
+#outdir = '/data/users/dbruciaf/AGRIF-NAtl/movf/orca20/runoff'
+
+#agrif_conf = "/data/users/dbruciaf/AGRIF-NAtl/movf/orca12/AGRIF_FixedGrids.in"
+#coord_zoom = ["/data/users/dbruciaf/AGRIF-NAtl/movf/orca12/zps/1_mesh_mask.nc"]
+#outdir = '/data/users/dbruciaf/AGRIF-NAtl/movf/orca12/runoff'
+
+#agrif_conf = "/data/users/dbruciaf/AGRIF-NAtl/gosi10-gs_r12/AGRIF_FixedGrids.in"
+agrif_conf = "/data/users/dbruciaf/AGRIF-NAtl/gosi10-ls_r20/AGRIF_FixedGrids.in"
+coord_zoom = [#"/data/users/dbruciaf/AGRIF-NAtl/gosi10-gs_r12/1_mesh_mask-tmask_as_gosi10-025.nc",
+              "/data/users/dbruciaf/AGRIF-NAtl/gosi10-ls_r20/1_mesh_mask-tmask_as_gosi10-025.nc",
+              #"/data/users/dbruciaf/AGRIF-NAtl/gosi10na+/3_gb_r20/3_mesh_mask.nc"
+             ]
+outfile = [#'/data/users/dbruciaf/AGRIF-NAtl/gosi10-gs_r12/runoff/1_eORCA025_runoff_GO6_icb-gs_r12.nc',
+           '/data/users/dbruciaf/AGRIF-NAtl/gosi10-ls_r20/runoff/1_eORCA025_runoff_GO6_icb-ls_r20.nc',
+           #'/data/users/dbruciaf/AGRIF-NAtl/gosi10na+/3_gb_r20/3_eORCA025_runoff_GO6_icb-gb_r20.nc'
+           ]
 
 # Global grids will have nghost_w = 0 and nghost_s = 1 
 # (the western boundary is cyclic, the southern boundary 
@@ -61,7 +98,7 @@ Vars = ['sornficb'    , 'icbrnftemper',
         'socoefr'     , 'sofwfisf'    , 
         'sozisfmin'   , 'sozisfmax'   ,
         'time_counter'                ]
-ds_Priv = ds_Priv[Vars]
+#ds_Priv = ds_Priv[Vars]
 
 # 4) Looping over each zoom:
 
@@ -118,29 +155,42 @@ for n in range(len(zooms)):
     
     jzoom_b = zoom_nbghost_s
 
-    Vars = ['sornficb'    , 'icbrnftemper',
-            'socoefr'     , 'sofwfisf'    ,
-            'sozisfmin'   , 'sozisfmax'   ]
+    Vars = ['sornficb', 'icbrnftemper', 'socoefr']
+    # 'sofwfisf', 'sozisfmin', 'sozisfmax'
+    da_msk = ds_Priv['socoefr']*0 + 1
 
     for jp in range(jmin, jmax+1):
         jzoom_e = jzoom_b + refy
         izoom_b = zoom_nbghost_w
         for ip in range(imin, imax+1):
+            if ds_Priv['socoefr'][jp,ip] > 0.: da_msk[jp,ip] = 0
             izoom_e = izoom_b + refx          
             
             for v in Vars:
-                if v in ["sornficb","sofwfisf"]:      
+                if v in ["sornficb"]: #,"sofwfisf"]:      
                    for jt in range(12): 
-                       ds_Zriv[v][jt,jzoom_b:jzoom_e, izoom_b:izoom_e] =  reffac * ds_Priv[v][jt,jp,ip].data
+                       ds_Zriv[v][jt,jzoom_b:jzoom_e, izoom_b:izoom_e] =  reffac * ds_Priv[v][jt,jp,ip]
                 else:
-                   ds_Zriv[v][jzoom_b:jzoom_e, izoom_b:izoom_e] =  ds_Priv[v][jp,ip].data          
-                   
+                   ds_Zriv[v][jzoom_b:jzoom_e, izoom_b:izoom_e] = ds_Priv[v][jp,ip].copy(deep=True)
             izoom_b = izoom_e
         jzoom_b = jzoom_e
 
-    outdir = '/data/users/dbruciaf/AGRIF-NAtl/gs/orca08'
-    outriv1 = outdir + '/runoff/eORCA025_runoff_GO6_icb_gs-orca08.nc'
-    enc = {"icbrnftemper"        : {"_FillValue": None },
+    # setting no runoff in the parent since it is taken into account in the zoom
+    #ds_Priv["sornficb"] = ds_Priv.sornficb.where(da_msk == 1, 0.)
+    #ds_Priv['socoefr']  = ds_Priv.socoefr.where(da_msk == 1, 0.)
+
+    #outdir = '/data/users/dbruciaf/AGRIF-NAtl/ls/orca12'
+    #outrivP = outdir + '/eORCA025_runoff_GO6_icb_zoom_mod.nc'
+    #outrivZ = outdir + '/eORCA025_runoff_GO6_icb_ls-orca20.nc'
+    
+    #outrivZ = outdir + '/eORCA025_runoff_GO6_icb_gs-orca04.nc'
+    #outrivZ = outdir + '/eORCA025_runoff_GO6_icb_gs-orca08.nc'
+    #outrivZ = outdir + '/eORCA025_runoff_GO6_icb_gs-orca12.nc'
+    #outrivZ = outdir + '/eORCA025_runoff_GO6_icb_movf-orca20.nc'
+    #outrivZ = outdir + '/eORCA025_runoff_GO6_icb_movf-orca12.nc'
+    outrivZ = outfile[n]
+
+    encP = {"icbrnftemper"        : {"_FillValue": None },
            "nav_lat"             : {"_FillValue": None },
            "nav_lon"             : {"_FillValue": None },
            "socoefr"             : {"_FillValue": -999. },
@@ -149,5 +199,14 @@ for n in range(len(zooms)):
            "sozisfmax"           : {"_FillValue": -999. },
            "sozisfmin"           : {"_FillValue": -999. },
            "time_counter"        : {"_FillValue": None },
-          } 
-    ds_Zriv.to_netcdf(outriv1, encoding=enc, unlimited_dims={'time_counter':True})
+           }
+    encZ = {"icbrnftemper"        : {"_FillValue": None },
+           "nav_lat"             : {"_FillValue": None },
+           "nav_lon"             : {"_FillValue": None },
+           "socoefr"             : {"_FillValue": -999. },
+           "sornficb"            : {"_FillValue": 1.00000002004088e+20 },
+           "time_counter"        : {"_FillValue": None },
+           }  
+    #ds_Priv.to_netcdf(outrivP, encoding=encP, unlimited_dims={'time_counter':True})
+    ds_Zriv.to_netcdf(outrivZ, encoding=encZ, unlimited_dims={'time_counter':True})
+    
