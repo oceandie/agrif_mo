@@ -129,5 +129,6 @@ for ancil in FILES:
            subprocess.check_output("cp "+trg_stem+"_"+var+"_"+ancil[0]+" "+outname, shell=True)
         else:
            subprocess.check_output("ncks -h -A "+trg_stem+"_"+var+"_"+ancil[0]+" "+outname, shell=True)
+        os.remove(trg_stem+"_"+var+"_"+ancil[0])
 
     print('   Success scripinterp.exe ...')
